@@ -1,9 +1,153 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <title>Minha Página em Branco</title>
+  <meta charset="UTF-8" />
+  <title>Portal de Arquivos</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet" />
+  <style>
+    
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Roboto', sans-serif;
+
+      
+      background-image: url('{{ url_for('static', filename='images/black-linen.png') }}');
+      background-repeat: repeat;
+      background-size: auto;
+      background-position: center center;
+
+      color: #ddd;
+      padding: 40px;
+      max-width: 700px;
+      margin: 40px auto;
+      border-radius: 8px;
+
+      
+      background-color: transparent;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+    header h1 {
+      margin-bottom: 10px;
+      color: #f0f0f0;
+      font-weight: 700;
+      text-shadow: 1px 1px 2px #000;
+    }
+    header p {
+      color: #bbb;
+      font-size: 16px;
+      text-shadow: 1px 1px 1px #000;
+    }
+
+    h2 {
+      color: #ccc;
+      text-align: center;
+      margin-top: 40px;
+      margin-bottom: 20px;
+      font-weight: 600;
+      text-shadow: 1px 1px 1px #000;
+    }
+
+    form {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    input[type="file"] {
+      margin-bottom: 15px;
+      padding: 6px;
+      border-radius: 5px;
+      border: 1px solid #444;
+      cursor: pointer;
+      background-color: #222;
+      color: #eee;
+    }
+
+    button {
+      border: none;
+      padding: 12px 28px;
+      border-radius: 6px;
+      font-size: 16px;
+      font-weight: 600;
+      color: white;
+      cursor: pointer;
+      transition: all 0.3s ease-in-out;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.6);
+    }
+
+    button.enviar {
+      background-color: #27ae60;
+    }
+    button.enviar:hover {
+      background-color: #1e8449;
+      box-shadow: 0 6px 12px rgba(30,132,73,0.9);
+    }
+
+    button.baixar {
+      background-color: #2980b9;
+    }
+    button.baixar:hover {
+      background-color: #1c5980;
+      box-shadow: 0 6px 12px rgba(28,89,128,0.9);
+    }
+
+    ul {
+      list-style-type: none;
+      padding: 0;
+    }
+
+    li {
+      background: rgba(40,40,40,0.8);
+      margin: 10px 0;
+      padding: 14px 20px;
+      border-left: 5px solid #2980b9;
+      border-radius: 4px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: 500;
+      color: #eee;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.6);
+    }
+
+    form[method="GET"] {
+      display: inline;
+      margin: 0;
+    }
+  </style>
 </head>
 <body>
+  <header>
+    <h1>📁 Portal de Arquivos</h1>
+    <p>Envie e baixe arquivos com facilidade</p>
+  </header>
+
+  <h2>Enviar Arquivo</h2>
+  <form method="POST" action="/upload" enctype="multipart/form-data">
+    <input type="file" name="arquivo" required />
+    <br />
+    <button type="submit" class="enviar">Enviar Arquivo</button>
+  </form>
+
+  <h2>Arquivos Disponíveis para Download</h2>
+  <ul>
+    {% for arquivo in arquivos %}
+      <li>
+        {{ arquivo }}
+        <form method="GET" action="{{ url_for('download', filename=arquivo) }}">
+          <button type="submit" class="baixar">⬇️ Baixar</button>
+        </form>
+      </li>
+    {% else %}
+      <li>Nenhum arquivo disponível</li>
+    {% endfor %}
+  </ul>
 </body>
 </html>
